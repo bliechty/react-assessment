@@ -17,6 +17,10 @@ class Board extends React.Component {
                         onClick={() => this.props.onClick(i)}/>);
     }
 
+    renderSquares() {
+
+    }
+
     render() {
         return (
             <div>
@@ -82,20 +86,25 @@ class Game extends React.Component {
         const winner = calculateWinner(current.squares);
 
         const moves = history.map((step, move) => {
+            let fontWeight;
             const desc = move ?
                 'Go to move #' + move :
                 'Go to game start';
+            if (move === this.state.stepNumber) {
+                fontWeight = 'bold';
+            }
             return (
                 <li key={uuid.v4()}>
-                    <button onClick={() => this.jumpTo(move)}>{desc}</button>
+                    <button onClick={() => this.jumpTo(move)} style={{fontWeight: fontWeight}}>{desc}</button>
                 </li>
             );
-
         });
 
         let status;
         if (winner) {
             status = 'Winner: ' + winner;
+        } else if (this.state.stepNumber === 9) {
+            status = 'DRAW';
         } else {
             status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
         }
